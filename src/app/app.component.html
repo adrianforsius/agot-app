@@ -1,3 +1,5 @@
-<h1>
-  {{title}}
-</h1>
+<div class="board">
+  <div class="influence-ladders">
+    <influence-ladder *ngFor="let influenceLadder of influenceLadders; let i = index" class="ladder ladder-{{i}}" [influenceLadder]="influenceLadder"></influence-ladder>
+  </div>
+</div>
