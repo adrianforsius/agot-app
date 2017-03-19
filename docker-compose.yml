@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    build: ./nginx/
+    links:
+      - backend
+      - client
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+  backend:
+    build: ./backend
+    image: flask:latest
+    volumes:
+      - ./server/flask_app:/server/flask_app/
+    ports:
+      - "8081:8081"
+  client:
+    build: ./client
+    image: angular2:latest
+    ports:
+      - "4200:4200"
+      - "49152:49152"

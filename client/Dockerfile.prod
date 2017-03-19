@@ -1,0 +1,17 @@
+FROM mhart/alpine-node:6.4.0
+
+RUN adduser -D app \
+  && mkdir -p /client
+
+COPY package.json typedoc.json tsconfig.json /client/
+COPY src /client/src/
+
+WORKDIR /client
+
+RUN apk --update \
+  && npm install --only=production \
+  && ng --build --aot \
+  && rm -rf /client/src \
+  && chown -R app:app /client
+
+USER app
