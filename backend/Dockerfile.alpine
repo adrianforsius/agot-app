@@ -1,0 +1,28 @@
+FROM gliderlabs/alpine:latest
+
+# Base requirements
+RUN apk --no-cache add --update \
+    python \
+    py-pip \
+  && apk --update add --virtual build-dependencies gcc python-dev build-base \
+  && apk del build-dependencies
+
+RUN apk add bash
+
+# Use proper app-user Commented due to root only having access to mounted volumes
+RUN mkdir -p /server
+
+# App requirements
+COPY requirements.txt manage.py /server/
+RUN pip install -r /server/requirements.txt
+
+# COPY Source for live updates
+COPY ./app /server/app/
+VOLUME /server/app
+
+WORKDIR /server
+
+EXPOSE 8081
+
+CMD ["python", "manage.py", "runserver"]
+#CMD ["bash"]

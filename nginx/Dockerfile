@@ -6,4 +6,6 @@ RUN apk add openrc
 RUN apk add vim
 RUN apk del build-dependencies
 
+VOLUME /var/log/nginx
+
 COPY ./nginx.conf /etc/nginx/nginx.conf
