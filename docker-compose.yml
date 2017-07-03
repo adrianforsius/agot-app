@@ -6,7 +6,7 @@ services:
     build: ./nginx/
     links:
       - backend
-      - client
+      - frontend
     restart: always
     ports:
       - "80:80"
@@ -18,9 +18,21 @@ services:
       - "MODE=dev"
     ports:
       - "8081:8081"
-  client:
-    build: ./client
+    # For development
+    volumes:
+      - "./backend:/usr/src/app"
+    links:
+      - db
+  frontend:
+    build: ./frontend
     image: angular2:latest
     ports:
       - "4200:4200"
       - "49152:49152"
+    # For development
+    volumes:
+      - "./frontend:/frontend"
+  db:
+    restart: always
+    build: ./db
+    image: mongodb:latest
